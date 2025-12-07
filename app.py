@@ -27,9 +27,10 @@ if st.button("پاسخ بگیر", type="primary"):
             # این قسمت باید با کد پرامپت شما از AI Studio جایگزین شود
             try:
                 response = client.models.generate_content(
-                    model=model,
-                    contents=[user_prompt]
-                )
+    model="gemini-2.5-flash", # <--- نام جدید جایگزین شده
+    contents=contents
+)
+                
                 st.info(response.text)
             except Exception as e:
                 st.error(f"خطایی رخ داد: {e}")
