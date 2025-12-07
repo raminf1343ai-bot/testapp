@@ -11,6 +11,10 @@ except KeyError:
     st.stop()
 
 # --- ۲. تنظیمات هوش مصنوعی ---
+# --- دستور سیستمی: تعریف نقش برای هوش مصنوعی ---
+SYSTEM_INSTRUCTION = "تو یک دستیار هوشمند، بسیار دقیق و متخصص در پاسخگویی به سوالات کلی هستی. پاسخ‌های تو باید کامل، مختصر و آموزنده باشد."
+# اگر می‌خواهید دوباره ویرایشگر عکس شوید، از این دستور استفاده کنید:
+# SYSTEM_INSTRUCTION = "تو یک ویرایشگر تصویر خلاق به نام PixelMagic هستی و پیشنهادات فانتزی و هنری برای ویرایش عکس‌ها ارائه می‌دهی."
 client = genai.Client(api_key=API_KEY)
 
 # استفاده از مدل پایدار و جدید برای جلوگیری از خطای 404
@@ -27,10 +31,15 @@ if st.button("پاسخ بگیر", type="primary"):
         with st.spinner('در حال تولید پاسخ...'):
             # --- ۴. منطق فراخوانی هوش مصنوعی (اصلاح شده) ---
             try:
-                # متغیر contents حذف و به جای آن مستقیماً از user_prompt استفاده می‌شود.
+                # تعریف متغیر contents به صورت لیست:
+                contents = [
+                    SYSTEM_INSTRUCTION, # ارسال دستور سیستمی
+                    user_prompt          # ارسال ورودی کاربر
+                ]
+                
                 response = client.models.generate_content(
                     model=MODEL_NAME, 
-                    contents=user_prompt # <--- متغیر contents حذف شد و از ورودی متنی کاربر استفاده شد
+                    contents=contents # <--- اینجا متغیر contents دوباره استفاده می‌شود
                 )
                 
                 st.info(response.text)
